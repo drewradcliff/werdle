@@ -1,0 +1,22 @@
+{
+	"Import Structure": {
+			"prefix": "importstruct",
+			"body": [
+					"// Packages",
+					"",
+					"// Components",
+					"",
+					"// Style",
+					"",
+					"// Assets",
+					"",
+					"// Constants",
+					"",
+					"// Types",
+					"",
+					"// Actions",
+					"",
+			],
+			"description": "Boilerplate for import structure"
+	}
+}

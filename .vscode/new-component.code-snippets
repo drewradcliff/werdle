@@ -1,0 +1,32 @@
+{
+	"New Component": {
+			"prefix": "newcomponent",
+			"body": [
+					"import React, { useEffect, useRef, useState } from 'react';",
+					"",
+					"// Packages",
+					"",
+					"// Components",
+					"",
+					"// Style",
+					"",
+					"// Assets",
+					"",
+					"// Constants",
+					"",
+					"// Types",
+					"",
+					"// Actions",
+					"",
+					"const ComponentName = () => {",
+					"",
+					"$1 return (",
+					"",
+					"$1 );",
+					"",
+					"}",
+					"export default ComponentName;"
+			],
+			"description": "Boilerplate for a new component with import structure"
+	}
+}

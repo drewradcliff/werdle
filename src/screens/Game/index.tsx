@@ -1,6 +1,7 @@
 // Packages
 import { useEffect, useState } from 'react';
 import { useColorScheme, StatusBar, Text, View } from 'react-native';
+import axios from 'axios';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,9 +13,10 @@ import style from './style';
 
 // Constants
 import { GAME_ROWS, WORD_LENGTH } from 'constants/';
+import { MW_API_URL, MW_API_KEY } from '@env';
 
 // Types
-import { Guess, Match } from 'types';
+import { Guess, Match, MWResponse } from 'types';
 
 const Game = () => {
   const [todaysWord, setTodaysWord] = useState('QUERY'),
@@ -33,7 +35,21 @@ const Game = () => {
   //   // :^)
   // }, []);
 
-  const handleSubmit = () => {
+  const isWord = async (word: string) => {
+    return axios
+      .get<MWResponse[]>(
+        `${MW_API_URL}/api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
+      )
+      .then(({ data }) => {
+        if (data[0].meta) return true;
+        return false;
+      })
+      .catch(() => false);
+  };
+
+  const handleSubmit = async () => {
+    if (!(await isWord(word))) return;
+
     const newGuesses = guessList,
       todaysWordArray = todaysWord.split(''),
       guessArray = word.split(''),

@@ -12,3 +12,7 @@ export interface Guess {
 export interface KeyboardRow {
   keys: string[];
 }
+
+export interface MWResponse {
+  meta: { id: string } | string | null;
+}
