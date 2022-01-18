@@ -23,6 +23,9 @@ import {
   rollingStone,
   aquaForest,
   sundance,
+  white,
+  iron,
+  shark,
 } from 'constants/colors';
 
 // Types
@@ -48,7 +51,7 @@ const Keyboard = ({
   const colorScheme = useColorScheme(),
     [matches, setMatches] = useState<Match[]>([]),
     opacity = useRef(new Animated.Value(1)).current,
-    fontColor = { color: colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b' },
+    // fontColor = { color: colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b' },
     buttonColor = {
       backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
       borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
@@ -145,7 +148,7 @@ const Keyboard = ({
     }
   };
 
-  const getStyle = (key: string) => {
+  const getStyles = (key: string) => {
     // Check to see if the letter has been guessed or not.
     const filteredMatchList = matches.filter(
       ({ key: matchKey }: Match) => key === matchKey,
@@ -155,24 +158,44 @@ const Keyboard = ({
 
       if (match.match) {
         return {
-          backgroundColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
-          borderColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
+          tile: {
+            backgroundColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
+            borderColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
+          },
+          text: {
+            color: white,
+          },
         };
       } else if (match.exists) {
         return {
-          backgroundColor: colorScheme === 'dark' ? tussock : sundance,
-          borderColor: colorScheme === 'dark' ? tussock : sundance,
+          tile: {
+            backgroundColor: colorScheme === 'dark' ? tussock : sundance,
+            borderColor: colorScheme === 'dark' ? tussock : sundance,
+          },
+          text: {
+            color: white,
+          },
         };
       } else {
         return {
-          backgroundColor: colorScheme === 'dark' ? tuna : rollingStone,
-          borderColor: colorScheme === 'dark' ? tuna : rollingStone,
+          tile: {
+            backgroundColor: colorScheme === 'dark' ? tuna : rollingStone,
+            borderColor: colorScheme === 'dark' ? tuna : rollingStone,
+          },
+          text: {
+            color: white,
+          },
         };
       }
     } else {
       return {
-        backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
-        borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
+        tile: {
+          backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
+          borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
+        },
+        text: {
+          color: colorScheme === 'dark' ? white : shark,
+        },
       };
     }
   };
@@ -197,12 +220,14 @@ const Keyboard = ({
             ) : null}
 
             {keys.map((key, keyIndex) => {
+              const keyStyle = getStyles(key);
+
               return (
                 <TouchableOpacity
-                  style={[style.key, getStyle(key)]}
+                  style={[style.key, keyStyle.tile]}
                   key={`row${rowIndex}-key${keyIndex}`}
                   onPress={() => handlePress(key)}>
-                  <Text style={[style.keyText, fontColor]}>{key}</Text>
+                  <Text style={[style.keyText, keyStyle.text]}>{key}</Text>
                 </TouchableOpacity>
               );
             })}

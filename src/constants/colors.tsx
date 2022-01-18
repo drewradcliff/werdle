@@ -7,5 +7,6 @@ export const white = '#ffffff';
 export const iron = '#d7dadc';
 export const alto = '#d8d8d8';
 export const rollingStone = '#787c7e';
-export const tuna = '#3a3a3c';
+export const abbey = '#565758';
+export const tuna = '#393a3c';
 export const shark = '#1a1a1b';

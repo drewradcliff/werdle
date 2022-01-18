@@ -16,6 +16,7 @@ import {
   shark,
   sundance,
   white,
+  abbey,
 } from 'constants/colors';
 
 // Types
@@ -43,7 +44,7 @@ export default function Row({
       borderColor: colorScheme === 'dark' ? tuna : rollingStone,
     },
     currentLetterBorder = {
-      borderColor: colorScheme === 'dark' ? iron : shark,
+      borderColor: colorScheme === 'dark' ? abbey : shark,
     },
     matchBg = {
       backgroundColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
