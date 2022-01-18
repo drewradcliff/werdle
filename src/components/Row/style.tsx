@@ -15,7 +15,6 @@ export default StyleSheet.create({
   text: {
     fontSize: 32,
     textAlign: 'center',
-    color: '#d7dadc',
     fontWeight: 'bold',
   },
 });
