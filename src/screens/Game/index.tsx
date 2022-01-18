@@ -1,6 +1,8 @@
 // Packages
 import { useEffect, useState } from 'react';
 import { useColorScheme, StatusBar, Text, View } from 'react-native';
+import { MW_API_URL, MW_API_KEY } from '@env';
+import axios from 'axios';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -33,7 +35,21 @@ const Game = () => {
   //   // :^)
   // }, []);
 
-  const handleSubmit = () => {
+  const isWord = async (word: string) => {
+    return axios
+      .get(
+        `${MW_API_URL}/api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
+      )
+      .then(res => {
+        if (res.data[0].def) return true;
+        return false;
+      })
+      .catch(() => false);
+  };
+
+  const handleSubmit = async () => {
+    if (!(await isWord(word))) return;
+
     const newGuesses = guessList,
       todaysWordArray = todaysWord.split(''),
       guessArray = word.split(''),
