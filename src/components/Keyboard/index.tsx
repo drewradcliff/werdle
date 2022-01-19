@@ -1,5 +1,5 @@
 // Packages
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   useColorScheme,
@@ -7,19 +7,24 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+
+// Packages
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 // Style
 import style from './style';
 
 // Constants
 import {
-  darkendGreen,
-  darkendYellow,
-  darkGray,
-  gray,
-  green,
-  yellow,
+  hippieGreen,
+  tussock,
+  tuna,
+  rollingStone,
+  aquaForest,
+  sundance,
+  white,
+  shark,
 } from 'constants/colors';
 
 // Types
@@ -45,7 +50,7 @@ const Keyboard = ({
   const colorScheme = useColorScheme(),
     [matches, setMatches] = useState<Match[]>([]),
     opacity = useRef(new Animated.Value(1)).current,
-    fontColor = { color: colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b' },
+    // fontColor = { color: colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b' },
     buttonColor = {
       backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
       borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
@@ -142,7 +147,7 @@ const Keyboard = ({
     }
   };
 
-  const getStyle = (key: string) => {
+  const getStyles = (key: string) => {
     // Check to see if the letter has been guessed or not.
     const filteredMatchList = matches.filter(
       ({ key: matchKey }: Match) => key === matchKey,
@@ -152,24 +157,44 @@ const Keyboard = ({
 
       if (match.match) {
         return {
-          backgroundColor: colorScheme === 'dark' ? darkendGreen : green,
-          borderColor: colorScheme === 'dark' ? darkendGreen : green,
+          tile: {
+            backgroundColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
+            borderColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
+          },
+          text: {
+            color: white,
+          },
         };
       } else if (match.exists) {
         return {
-          backgroundColor: colorScheme === 'dark' ? darkendYellow : yellow,
-          borderColor: colorScheme === 'dark' ? darkendYellow : yellow,
+          tile: {
+            backgroundColor: colorScheme === 'dark' ? tussock : sundance,
+            borderColor: colorScheme === 'dark' ? tussock : sundance,
+          },
+          text: {
+            color: white,
+          },
         };
       } else {
         return {
-          backgroundColor: colorScheme === 'dark' ? darkGray : gray,
-          borderColor: colorScheme === 'dark' ? darkGray : gray,
+          tile: {
+            backgroundColor: colorScheme === 'dark' ? tuna : rollingStone,
+            borderColor: colorScheme === 'dark' ? tuna : rollingStone,
+          },
+          text: {
+            color: white,
+          },
         };
       }
     } else {
       return {
-        backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
-        borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
+        tile: {
+          backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
+          borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
+        },
+        text: {
+          color: colorScheme === 'dark' ? white : shark,
+        },
       };
     }
   };
@@ -183,21 +208,25 @@ const Keyboard = ({
               <TouchableOpacity
                 onPress={() => handlePress('enter')}
                 style={[style.specialKey, buttonColor]}>
-                <Ionicons
-                  name="enter"
-                  color={colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b'}
-                  size={20}
-                />
+                <Text
+                  style={[
+                    style.specialKeyText,
+                    { color: colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b' },
+                  ]}>
+                  Enter
+                </Text>
               </TouchableOpacity>
             ) : null}
 
             {keys.map((key, keyIndex) => {
+              const keyStyle = getStyles(key);
+
               return (
                 <TouchableOpacity
-                  style={[style.key, getStyle(key)]}
+                  style={[style.key, keyStyle.tile]}
                   key={`row${rowIndex}-key${keyIndex}`}
                   onPress={() => handlePress(key)}>
-                  <Text style={[style.keyText, fontColor]}>{key}</Text>
+                  <Text style={[style.keyText, keyStyle.text]}>{key}</Text>
                 </TouchableOpacity>
               );
             })}
@@ -206,8 +235,8 @@ const Keyboard = ({
               <TouchableOpacity
                 onPress={() => handlePress('backspace')}
                 style={[style.specialKey, buttonColor]}>
-                <Ionicons
-                  name="backspace"
+                <FontAwesomeIcon
+                  icon={faBackspace}
                   color={colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b'}
                   size={20}
                 />

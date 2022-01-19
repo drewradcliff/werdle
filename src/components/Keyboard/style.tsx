@@ -31,4 +31,8 @@ export default StyleSheet.create({
     borderRadius: 6,
     margin: 2,
   },
+  specialKeyText: {
+    fontSize: 12,
+    textAlign: 'center',
+  },
 });

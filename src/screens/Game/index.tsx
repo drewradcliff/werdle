@@ -1,5 +1,5 @@
 // Packages
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useColorScheme, StatusBar, Text, View } from 'react-native';
 import axios from 'axios';
 

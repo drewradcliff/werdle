@@ -1,4 +1,5 @@
 // Packages
+import React from 'react';
 import { useColorScheme, Text, View } from 'react-native';
 
 // Style
@@ -6,12 +7,16 @@ import style from './style';
 
 // Constants
 import {
-  darkendGreen,
-  darkendYellow,
-  darkGray,
-  gray,
-  green,
-  yellow,
+  hippieGreen,
+  tussock,
+  tuna,
+  rollingStone,
+  aquaForest,
+  iron,
+  shark,
+  sundance,
+  white,
+  abbey,
 } from 'constants/colors';
 
 // Types
@@ -25,19 +30,35 @@ interface Props {
   gameOver?: boolean; // TODO  -- this shouldn't be optional.
 }
 
-export default function Row({ index, guessList, word, wordLength }: Props) {
+export default function Row({
+  index,
+  guessList,
+  word,
+  wordLength,
+  gameOver = false,
+}: Props) {
   const colorScheme = useColorScheme(),
-    letterBorder = { borderColor: colorScheme === 'dark' ? darkGray : gray },
+    // In the future we should look into animating these tiles. It will probably make the borders, backgrounds,
+    //  and text colors into one single variable and just passing animated style to the component.
+    letterBorder = {
+      borderColor: colorScheme === 'dark' ? tuna : rollingStone,
+    },
+    currentLetterBorder = {
+      borderColor: colorScheme === 'dark' ? abbey : shark,
+    },
     matchBg = {
-      backgroundColor: colorScheme === 'dark' ? darkendGreen : green,
-      borderColor: colorScheme === 'dark' ? darkendGreen : green,
+      backgroundColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
+      borderColor: colorScheme === 'dark' ? hippieGreen : aquaForest,
     },
     existBg = {
-      backgroundColor: colorScheme === 'dark' ? darkendYellow : yellow,
-      borderColor: colorScheme === 'dark' ? darkendYellow : yellow,
+      backgroundColor: colorScheme === 'dark' ? tussock : sundance,
+      borderColor: colorScheme === 'dark' ? tussock : sundance,
     },
     wrongBg = {
-      backgroundColor: colorScheme === 'dark' ? darkGray : gray,
+      backgroundColor: colorScheme === 'dark' ? tuna : rollingStone,
+    },
+    textColor = {
+      color: colorScheme === 'dark' ? iron : white,
     };
 
   const getElement = (letterIndex: number) => {
@@ -57,15 +78,28 @@ export default function Row({ index, guessList, word, wordLength }: Props) {
               : wrongBg,
           ]}
           key={`row${index}letterIndex${letterIndex}`}>
-          <Text style={style.text}>{wordGuessed[letterIndex]}</Text>
+          <Text style={[style.text, textColor]}>
+            {wordGuessed[letterIndex]}
+          </Text>
         </View>
       );
     } else if (index === guessList.length && word !== '') {
       return (
         <View
-          style={[style.letter, letterBorder]}
+          style={[
+            style.letter,
+            word[letterIndex] !== undefined
+              ? currentLetterBorder
+              : letterBorder,
+          ]}
           key={`row${index}letterIndex${letterIndex}`}>
-          <Text style={style.text}>{word[letterIndex]}</Text>
+          <Text
+            style={[
+              style.text,
+              { color: colorScheme === 'dark' ? iron : shark },
+            ]}>
+            {word[letterIndex]}
+          </Text>
         </View>
       );
     } else {

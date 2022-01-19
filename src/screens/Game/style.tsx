@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontFamily: 'LexendDeca_400Regular',
+    fontFamily: 'LexendDeca-Regular',
     marginBottom: 32,
   },
   keyboard: {

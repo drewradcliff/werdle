@@ -1,9 +1,27 @@
-// basically just render out the game screen for now.
-// this might change in the future if we add a hiscores screen, etc.
-import Game from 'screens/Game';
+import React from 'react';
+import { AppRegistry, Platform, UIManager } from 'react-native';
 
-const GameScreen = () => {
-  return <Game />;
+// Packages
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+// Components
+import AppNavigator from 'navigator';
+
+// Constants
+import { name as appName } from '../app.json';
+
+if (Platform.OS === 'android') {
+	if (UIManager.setLayoutAnimationEnabledExperimental) {
+		UIManager.setLayoutAnimationEnabledExperimental(true);
+	}
+}
+
+const App = () => {
+	return (
+		<SafeAreaProvider>
+			<AppNavigator />
+		</SafeAreaProvider>
+	);
 };
 
-export default GameScreen;
+AppRegistry.registerComponent(appName, () => App);
