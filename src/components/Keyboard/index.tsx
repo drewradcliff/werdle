@@ -24,7 +24,6 @@ import {
   aquaForest,
   sundance,
   white,
-  iron,
   shark,
 } from 'constants/colors';
 
