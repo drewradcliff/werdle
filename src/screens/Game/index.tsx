@@ -1,6 +1,6 @@
 // Packages
 import React, { useEffect, useState } from 'react';
-import { useColorScheme, StatusBar, Text, View } from 'react-native';
+import { useColorScheme, StatusBar, Text, View, Alert } from 'react-native';
 import axios from 'axios';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,13 +38,17 @@ const Game = () => {
   const isWord = async (word: string) => {
     return axios
       .get<MWResponse[]>(
-        `${MW_API_URL}/api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
+        `${MW_API_URL}api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
       )
       .then(({ data }) => {
         if (data[0].meta) return true;
+        Alert.alert('Not a word');
         return false;
       })
-      .catch(() => false);
+      .catch(() => {
+        Alert.alert('Error', 'Unable to use dictionary');
+        return false;
+      });
   };
 
   const handleSubmit = async () => {
