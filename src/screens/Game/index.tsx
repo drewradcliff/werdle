@@ -1,6 +1,6 @@
 // Packages
 import React, { useEffect, useState } from 'react';
-import { useColorScheme, StatusBar, Text, View } from 'react-native';
+import { useColorScheme, StatusBar, Text, View, Alert } from 'react-native';
 import axios from 'axios';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -42,9 +42,13 @@ const Game = () => {
       )
       .then(({ data }) => {
         if (data[0].meta) return true;
+        Alert.alert('Not a word');
         return false;
       })
-      .catch(() => false);
+      .catch(() => {
+        Alert.alert('Error', 'Unable to use dictionary');
+        return false;
+      });
   };
 
   const handleSubmit = async () => {
