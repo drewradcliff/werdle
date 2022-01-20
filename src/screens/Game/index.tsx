@@ -38,7 +38,7 @@ const Game = () => {
   const isWord = async (word: string) => {
     return axios
       .get<MWResponse[]>(
-        `${MW_API_URL}api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
+        `${MW_API_URL}/api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
       )
       .then(({ data }) => {
         if (data[0].meta) return true;
