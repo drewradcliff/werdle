@@ -7,6 +7,7 @@ export default StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   key: {
     paddingVertical: 12,

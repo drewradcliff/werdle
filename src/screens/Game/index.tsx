@@ -1,12 +1,21 @@
-// Packages
-import React, { useEffect, useState } from 'react';
-import { useColorScheme, StatusBar, Text, View, Alert } from 'react-native';
-import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, StatusBar, Text, useColorScheme, View } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
+// Packages
+import axios from 'axios';
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import { faShare } from '@fortawesome/free-solid-svg-icons';
+import LottieView from 'lottie-react-native';
 
 // Components
-import { Keyboard, Row } from 'components';
+import { Button, Keyboard, Row } from 'components';
 
 // Style
 import style from './style';
@@ -19,10 +28,13 @@ import { MW_API_URL, MW_API_KEY } from '@env';
 import { Guess, Match, MWResponse } from 'types';
 
 const Game = () => {
-  const [todaysWord, setTodaysWord] = useState('QUERY'),
+  const [todaysWord, setTodaysWord] = useState('TREAT'),
     [guessList, setGuessList] = useState<Guess[]>([]),
     [word, setWord] = useState(''),
-    colorScheme = useColorScheme();
+    [gameComplete, setGameComplete] = useState(false),
+    colorScheme = useColorScheme(),
+    insets = useSafeAreaInsets(),
+    lottieRef = useRef<LottieView>(null);
 
   useEffect(() => {
     StatusBar.setBarStyle(
@@ -30,67 +42,98 @@ const Game = () => {
     );
   }, [colorScheme]);
 
-  // useEffect(() => {
-  //   // This is where you can fetch your word of the day from amplify
-  //   // :^)
-  // }, []);
+  useEffect(() => {
+    gameComplete && lottieRef.current?.play();
+  }, [gameComplete]);
+
+  const checkForCompletion = () => {
+    const recent_matches = guessList[guessList.length - 1].matches,
+      matching_word = recent_matches.every(({ match }: Match) => match);
+
+    setGameComplete(matching_word || guessList.length === GAME_ROWS);
+  };
 
   const isWord = async (word: string) => {
-    return axios
+    return await axios
       .get<MWResponse[]>(
         `${MW_API_URL}/api/v3/references/collegiate/json/${word}?key=${MW_API_KEY}`,
       )
       .then(({ data }) => {
-        if (data[0].meta) return true;
-        Alert.alert('Not a word');
-        return false;
+        return data[0].meta
+          ? { error: false, valid: true }
+          : { error: false, valid: false };
       })
       .catch(() => {
-        Alert.alert('Error', 'Unable to use dictionary');
-        return false;
+        return { error: true, valid: false };
       });
   };
 
   const handleSubmit = async () => {
-    if (!(await isWord(word))) return;
+    await isWord(word).then(({ error, valid }) => {
+      if (!error && valid) {
+        const newGuesses = guessList,
+          todaysWordArray = todaysWord.split(''),
+          guessArray = word.split(''),
+          duplicatesInTodaysWord = todaysWordArray.filter(
+            (letter, index) => todaysWordArray.indexOf(letter) !== index,
+          );
 
-    const newGuesses = guessList,
-      todaysWordArray = todaysWord.split(''),
-      guessArray = word.split(''),
-      duplicatesInTodaysWord = todaysWordArray.filter(
-        (letter, index) => todaysWordArray.indexOf(letter) !== index,
-      );
+        const matches: Match[] = guessArray.map((letter, index) => {
+          const exists = todaysWord.indexOf(letter),
+            match =
+              exists > -1 &&
+              todaysWordArray[index].toLowerCase() ===
+                guessArray[index].toLowerCase(),
+            duplicateGuessCheck = guessArray.filter(
+              (duplicateLetter, index) =>
+                guessArray.indexOf(duplicateLetter) !== index &&
+                duplicateLetter === letter,
+            );
 
-    const matches: Match[] = guessArray.map((letter, index) => {
-      const exists = todaysWord.indexOf(letter),
-        match =
-          exists > -1 &&
-          todaysWordArray[index].toLowerCase() ===
-            guessArray[index].toLowerCase(),
-        duplicateGuessCheck = guessArray.filter(
-          (duplicateLetter, index) =>
-            guessArray.indexOf(duplicateLetter) !== index &&
-            duplicateLetter === letter,
+          return {
+            key: letter,
+            exists:
+              duplicateGuessCheck.length > duplicatesInTodaysWord.length
+                ? false
+                : exists > -1,
+            match,
+          };
+        });
+
+        const newGuess: Guess = {
+          wordGuessed: word,
+          matches,
+        };
+
+        newGuesses.push(newGuess);
+        setGuessList(newGuesses);
+        setWord('');
+        checkForCompletion();
+      } else if (!error && !valid) {
+        Alert.alert('Oops!', `${word} is not a valid word. Try again!`);
+      } else {
+        Alert.alert(
+          'Oops!',
+          'Something went wrong while attempting to validate your word.',
         );
-
-      return {
-        key: letter,
-        exists:
-          duplicateGuessCheck.length > duplicatesInTodaysWord.length
-            ? false
-            : exists > -1,
-        match,
-      };
+      }
     });
+  };
 
-    const newGuess: Guess = {
-      wordGuessed: word,
-      matches,
+  const buttonStyle = useAnimatedStyle(() => {
+    return {
+      bottom: insets.bottom,
+      transform: [
+        {
+          translateY: withSpring(gameComplete ? 0 : insets.bottom * 2),
+        },
+      ],
+      opacity: withSpring(gameComplete ? 1 : 0),
     };
+  }, [gameComplete]);
 
-    newGuesses.push(newGuess);
-    setGuessList(newGuesses);
-    setWord('');
+  const handleShare = () => {
+    // TODO - handle emoji copy logic here
   };
 
   return (
@@ -107,7 +150,7 @@ const Game = () => {
         ]}>
         werdle
       </Text>
-      <View style={style.row_container}>
+      <View style={style.gameBoard}>
         {Array.from(Array(GAME_ROWS), (_, i) => (
           <Row
             key={i}
@@ -124,7 +167,27 @@ const Game = () => {
         wordLength={WORD_LENGTH}
         setWord={setWord}
         handleSubmit={handleSubmit}
+        gameOver={gameComplete}
       />
+
+      <Animated.View style={[style.buttonRow, buttonStyle]}>
+        <Button
+          title="Share"
+          onPress={handleShare}
+          icon={faShare}
+          style={style.copyButton}
+          textColor="white"
+        />
+      </Animated.View>
+
+      <View style={style.confetti} pointerEvents="none">
+        <LottieView
+          autoPlay={false}
+          ref={lottieRef}
+          loop={false}
+          source={require('assets/lottie/confetti.json')}
+        />
+      </View>
     </SafeAreaView>
   );
 };

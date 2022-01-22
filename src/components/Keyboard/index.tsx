@@ -1,16 +1,16 @@
 // Packages
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  useColorScheme,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { useColorScheme, Text, View, TouchableOpacity } from 'react-native';
 
 // Packages
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { faBackspace } from '@fortawesome/free-solid-svg-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 // Style
 import style from './style';
@@ -49,8 +49,7 @@ const Keyboard = ({
 }: Props) => {
   const colorScheme = useColorScheme(),
     [matches, setMatches] = useState<Match[]>([]),
-    opacity = useRef(new Animated.Value(1)).current,
-    // fontColor = { color: colorScheme === 'dark' ? '#d7dadc' : '#1a1a1b' },
+    insets = useSafeAreaInsets(),
     buttonColor = {
       backgroundColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
       borderColor: colorScheme === 'dark' ? '#818384' : '#d3d6da',
@@ -121,12 +120,15 @@ const Keyboard = ({
     }
   }, [guessList.toString()]);
 
-  useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: gameOver ? 0 : 1,
-      duration: 420,
-      useNativeDriver: false,
-    }).start();
+  const containerStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(gameOver ? 0 : 1),
+      transform: [
+        {
+          translateY: withSpring(gameOver ? 162 + insets.bottom : 0),
+        },
+      ],
+    };
   }, [gameOver]);
 
   const handlePress = (key: string) => {
@@ -200,7 +202,7 @@ const Keyboard = ({
   };
 
   return (
-    <Animated.View style={style.container}>
+    <Animated.View style={[style.container, containerStyle]}>
       {keyboard.map(({ keys }: KeyboardRow, rowIndex) => {
         return (
           <View style={style.row} key={rowIndex}>
