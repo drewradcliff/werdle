@@ -4,7 +4,8 @@ export default StyleSheet.create({
   button: {
     marginHorizontal: 7,
     paddingVertical: 12,
-    paddingHorizontal: 64,
+    paddingHorizontal: 32,
+    flexGrow: 1,
     borderRadius: 6,
     position: 'relative',
     flexDirection: 'row',
@@ -17,6 +18,7 @@ export default StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 18,
-    fontWeight: 'bold',
+    lineHeight: 22,
+    fontFamily: 'SourceSansPro-Regular',
   },
 });

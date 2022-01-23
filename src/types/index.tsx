@@ -4,6 +4,11 @@ export interface Match {
   match: boolean;
 }
 
+export interface AuthData {
+  emailAddress: string;
+  password: string;
+}
+
 export interface Guess {
   wordGuessed: string;
   matches: Match[];

@@ -16,6 +16,7 @@
 		5A3442D027965B71006853F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3442CB27965B71006853F9 /* AppDelegate.m */; };
 		6172F2D35A4C3AA820D92908 /* libPods-werdle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-werdle.a */; };
 		7EF68E3733C33B6898317E18 /* libPods-werdle-werdleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-werdle-werdleTests.a */; };
+		8119A03411A04F448713C52F /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 848F8D4A58F64DEA8D42C359 /* SourceSansPro-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		6423831EA8574132BED9D8CC /* libPods-werdle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-werdle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		764CAB7057AB3F6EAB8D4499 /* Pods-werdle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-werdle.debug.xcconfig"; path = "Target Support Files/Pods-werdle/Pods-werdle.debug.xcconfig"; sourceTree = "<group>"; };
 		76FC035579954A71A95398B4 /* LexendDeca-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "LexendDeca-Regular.ttf"; path = "../src/assets/fonts/LexendDeca-Regular.ttf"; sourceTree = "<group>"; };
+		848F8D4A58F64DEA8D42C359 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../src/assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		9B918A13FFF0B2CDD6E5B830 /* Pods-werdle-werdleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-werdle-werdleTests.debug.xcconfig"; path = "Target Support Files/Pods-werdle-werdleTests/Pods-werdle-werdleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ABFE59519B596E51CEFDCCC0 /* libPods-werdle-werdleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-werdle-werdleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8BE94EFEA90FB2D34F1A6D /* Pods-werdle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-werdle.release.xcconfig"; path = "Target Support Files/Pods-werdle/Pods-werdle.release.xcconfig"; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			children = (
 				76FC035579954A71A95398B4 /* LexendDeca-Regular.ttf */,
 				0CB31DE208904492AA401A44 /* LexendDeca-SemiBold.ttf */,
+				848F8D4A58F64DEA8D42C359 /* SourceSansPro-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				5A3442CF27965B71006853F9 /* Images.xcassets in Resources */,
 				4224AADD6D2F45E48E9075B6 /* LexendDeca-Regular.ttf in Resources */,
 				01DD9FD65D3C43EBB8FC6892 /* LexendDeca-SemiBold.ttf in Resources */,
+				8119A03411A04F448713C52F /* SourceSansPro-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,7 +584,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -646,7 +650,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
