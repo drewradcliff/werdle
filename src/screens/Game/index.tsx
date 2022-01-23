@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, StatusBar, Text, useColorScheme, View } from 'react-native';
+import {
+  Alert,
+  StatusBar,
+  Share,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
 // Packages
 import axios from 'axios';
@@ -11,10 +18,13 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { faShare } from '@fortawesome/free-solid-svg-icons';
 import LottieView from 'lottie-react-native';
-import { RootState } from 'app/store';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { faShare } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
+
+// Redux
+import { RootState } from 'app/store';
 import { add } from 'slices/historySlice';
 
 // Components
@@ -150,7 +160,33 @@ const Game = () => {
   }, [gameComplete]);
 
   const handleShare = () => {
-    // TODO - handle emoji copy logic here
+    let output = '';
+    guessList.map(({ matches }) => {
+      matches.map(match => {
+        output += match.match
+          ? '🟩'
+          : match.exists
+          ? '🟨'
+          : colorScheme === 'dark'
+          ? '⬛'
+          : '⬜';
+      });
+
+      output += '\n';
+    });
+
+    const recent_matches = guessList[guessList.length - 1].matches,
+      matching_word = recent_matches.every(({ match }: Match) => match);
+
+    Clipboard.setString(
+      `Werdle ${matching_word ? guessList.length : 'X'}/6\n${output}`,
+    );
+
+    Share.share({
+      message: `Werdle ${matching_word ? guessList.length : 'X'}/6\n${output}`,
+      url: 'https://twitter.com',
+      title: `Werdle ${matching_word ? guessList.length : 'X'}/6`,
+    });
   };
 
   return (
