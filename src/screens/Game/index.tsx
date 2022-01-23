@@ -21,6 +21,11 @@ import {
 import LottieView from 'lottie-react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { faShare } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+
+// Redux
+import { RootState } from 'app/store';
+import { add } from 'slices/historySlice';
 
 // Components
 import { Button, Keyboard, Row } from 'components';
@@ -42,7 +47,9 @@ const Game = () => {
     [gameComplete, setGameComplete] = useState(false),
     colorScheme = useColorScheme(),
     insets = useSafeAreaInsets(),
-    lottieRef = useRef<LottieView>(null);
+    lottieRef = useRef<LottieView>(null),
+    dispatch = useDispatch(),
+    { history } = useSelector((state: RootState) => state.history);
 
   useEffect(() => {
     StatusBar.setBarStyle(
@@ -51,7 +58,16 @@ const Game = () => {
   }, [colorScheme]);
 
   useEffect(() => {
-    gameComplete && lottieRef.current?.play();
+    if (gameComplete) {
+      lottieRef.current?.play();
+      dispatch(
+        add({
+          completedAt: Date.now(),
+          guesses: guessList.length,
+          word: todaysWord,
+        }),
+      );
+    }
   }, [gameComplete]);
 
   const checkForCompletion = () => {
@@ -60,6 +76,9 @@ const Game = () => {
 
     setGameComplete(matching_word || guessList.length === GAME_ROWS);
   };
+
+  // test redux store is being updated
+  useEffect(() => console.log(history), [history]);
 
   const isWord = async (word: string) => {
     return await axios
