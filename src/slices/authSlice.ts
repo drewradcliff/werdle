@@ -10,22 +10,12 @@ export interface AuthState {
 
 const initialState: AuthState = {
   authData: { emailAddress: '', password: '' },
-  // account:
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // set: (state, action: PayloadAction<History[]>) => {
-    //   state.history = action.payload;
-    // },
-    // add: (state, action: PayloadAction<History>) => {
-    //   state.history.push(action.payload);
-    // },
-    // clear: state => {
-    //   state = initialState;
-    // },
     updateAuthData: (state, action: PayloadAction<AuthData>) => {
       state.authData = action.payload;
     },
