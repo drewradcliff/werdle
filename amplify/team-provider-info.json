@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-werdle-staging-54212-authRole",
+      "UnauthRoleArn": "arn:aws:iam::216974903048:role/amplify-werdle-staging-54212-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::216974903048:role/amplify-werdle-staging-54212-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-werdle-staging-54212-deployment",
+      "UnauthRoleName": "amplify-werdle-staging-54212-unauthRole",
+      "StackName": "amplify-werdle-staging-54212",
+      "StackId": "arn:aws:cloudformation:us-east-1:216974903048:stack/amplify-werdle-staging-54212/371ace20-7c0f-11ec-a52e-12732f42e421",
+      "AmplifyAppId": "d1yml6ndhk3dyw"
+    },
+    "categories": {
+      "auth": {
+        "werdle": {}
+      }
+    }
+  }
+}

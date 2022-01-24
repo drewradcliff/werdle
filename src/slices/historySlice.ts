@@ -1,35 +1,33 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+// Packages
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface History {
-  completedAt: number
-  guesses: number
-  word: string
-}
+// Types
+import { History } from 'models';
 
 export interface HistoryState {
-  history: History[]
+  history: History[];
 }
 
 const initialState: HistoryState = {
-  history: []
-}
+  history: [],
+};
 
 export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
     set: (state, action: PayloadAction<History[]>) => {
-      state.history = action.payload
+      state.history = action.payload;
     },
     add: (state, action: PayloadAction<History>) => {
-      state.history.push(action.payload)
+      state.history.push(action.payload);
     },
-    clear: (state) => {
-      state = initialState
-    }
-  }
-})
+    clear: state => {
+      state = initialState;
+    },
+  },
+});
 
-export const { set, add, clear } = historySlice.actions
+export const { set, add, clear } = historySlice.actions;
 
-export default historySlice.reducer
+export default historySlice.reducer;

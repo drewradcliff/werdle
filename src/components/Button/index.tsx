@@ -10,7 +10,7 @@ import style from './style';
 
 interface Props extends TouchableOpacityProps {
   title: string;
-  icon: IconProp;
+  icon?: IconProp;
   textColor: string;
 }
 
@@ -23,7 +23,9 @@ const Button = ({
 }: Props) => {
   return (
     <TouchableOpacity onPress={onPress} style={[style.button, userStyle]}>
-      <FontAwesomeIcon icon={icon} style={style.icon} color={textColor} />
+      {icon !== undefined ? (
+        <FontAwesomeIcon icon={icon} style={style.icon} color={textColor} />
+      ) : null}
 
       <Text style={[style.title, { color: textColor }]}>{title}</Text>
     </TouchableOpacity>

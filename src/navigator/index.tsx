@@ -7,9 +7,14 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack';
 
+// Packages
+import { useSelector } from 'react-redux';
+
 // Screens
 import {
+  Authentication,
   Game,
+  Intro,
   //Hiscores
 } from 'screens';
 
@@ -27,16 +32,20 @@ const MainStackScreens = () => {
         cardOverlayEnabled: true,
         ...TransitionPresets.ModalPresentationIOS,
       }}>
-      <MainStack.Screen name="Game" component={Game} />
       {/* <MainStack.Screen name="Hiscores" component={Hiscores} /> */}
+      <MainStack.Screen name="Game" component={Game} />
     </MainStack.Navigator>
   );
 };
 
 const AppStackScreens = () => {
+  const {} = useSelector(state => state.auth);
+
   return (
-    <AppStack.Navigator screenOptions={{ headerShown: false }}>
-      {/* Auth stack will go here in the future as well. We will use this when registering users hiscores. */}
+    <AppStack.Navigator
+      screenOptions={{ headerShown: false, gestureEnabled: false }}>
+      <AppStack.Screen name="Intro" component={Intro} />
+      <AppStack.Screen name="Authentication" component={Authentication} />
       <AppStack.Screen name="Main" component={MainStackScreens} />
     </AppStack.Navigator>
   );

@@ -23,10 +23,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { faShare } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-// Redux
-import { RootState } from 'app/store';
-import { add } from 'slices/historySlice';
-
 // Components
 import { Button, Keyboard, Row } from 'components';
 
@@ -40,6 +36,9 @@ import { MW_API_URL, MW_API_KEY } from '@env';
 // Types
 import { Guess, Match, MWResponse } from 'types';
 
+// Actions
+import { add } from 'slices/historySlice';
+
 const Game = () => {
   const [todaysWord, setTodaysWord] = useState('TREAT'),
     [guessList, setGuessList] = useState<Guess[]>([]),
@@ -49,7 +48,7 @@ const Game = () => {
     insets = useSafeAreaInsets(),
     lottieRef = useRef<LottieView>(null),
     dispatch = useDispatch(),
-    { history } = useSelector((state: RootState) => state.history);
+    { history } = useSelector(state => state.history);
 
   useEffect(() => {
     StatusBar.setBarStyle(
@@ -60,13 +59,16 @@ const Game = () => {
   useEffect(() => {
     if (gameComplete) {
       lottieRef.current?.play();
-      dispatch(
-        add({
-          completedAt: Date.now(),
-          guesses: guessList.length,
-          word: todaysWord,
-        }),
-      );
+
+      // If the user is signed in, save to DataStore, else make use of uuid.v4()
+      // to generate a pseudo id and inject into redux.
+      // dispatch(
+      //   add({
+      //     completedAt: Date.now(),
+      //     guesses: guessList.length,
+      //     word: todaysWord,
+      //   }),
+      // );
     }
   }, [gameComplete]);
 

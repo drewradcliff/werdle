@@ -25,6 +25,7 @@ export default StyleSheet.create({
     position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 32,
   },
   copyButton: { backgroundColor: rollingStone },
   confetti: {
