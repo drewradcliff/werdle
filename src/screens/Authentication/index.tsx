@@ -205,6 +205,7 @@ const Authentication = ({ navigation, route }: any) => {
             {authType === 'Log in' ? (
               <Text
                 style={[style.forgotPassword, textColor]}
+                suppressHighlighting
                 onPress={() => navigation.navigate('ForgotPassword')}>
                 Forgot password?
               </Text>
