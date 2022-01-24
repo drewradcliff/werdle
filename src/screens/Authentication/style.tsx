@@ -30,18 +30,19 @@ export default StyleSheet.create({
     marginBottom: 32,
     textAlign: 'center',
   },
-  informationContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  greeting: {
-    fontSize: 18,
-    fontFamily: 'SourceSansPro-Regular',
-    textAlign: 'center',
-  },
   inputContainer: {
     flexGrow: 1,
     justifyContent: 'center',
   },
-  buttonContainer: {},
+  greeting: {
+    fontSize: 20,
+    fontFamily: 'SourceSansPro-Regular',
+    textAlign: 'center',
+  },
+  forgotPassword: {
+    fontSize: 14,
+    fontFamily: 'SourceSansPro-Regular',
+    marginTop: 12,
+    textAlign: 'center',
+  },
 });

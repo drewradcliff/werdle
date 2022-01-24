@@ -45,6 +45,8 @@ const Authentication = ({ navigation, route }: any) => {
     { authData } = useSelector(state => state.auth),
     { emailAddress, password } = authData;
 
+  const textColor = { color: colorScheme === 'dark' ? white : woodsmoke };
+
   useEffect(() => {
     const { type } = route.params;
 
@@ -64,7 +66,7 @@ const Authentication = ({ navigation, route }: any) => {
     );
   };
 
-  const handleAuth = async (type?: 'Log in' | 'Sign up') => {
+  const handleAuth = async (type: string) => {
     if (authType === 'Log in' || type === 'Log in') {
       await Auth.signIn({
         username: emailAddress,
@@ -91,7 +93,27 @@ const Authentication = ({ navigation, route }: any) => {
                 text: 'Cancel',
               },
             ]);
+          } else if (error.code === 'UserNotConfirmedException') {
+            Alert.alert(
+              'Error',
+              `You have not yet confirmed your account. Would you like to do that now?`,
+              [
+                {
+                  onPress: () => {
+                    // probably go ahead and send them another activation code here as well.
+                    navigation.navigate('ConfirmAccount');
+                  },
+                  style: 'default',
+                  text: 'Confirm Account',
+                },
+                {
+                  style: 'cancel',
+                  text: 'Cancel',
+                },
+              ],
+            );
           } else {
+            console.log(error.code);
             Alert.alert('Error', error.message);
           }
         });
@@ -100,9 +122,10 @@ const Authentication = ({ navigation, route }: any) => {
         username: emailAddress,
         password,
       })
-        .then(({ user, userSub }: ISignUpResult) => {
+        .then(({ user, userConfirmed, userSub }: ISignUpResult) => {
           console.log(user);
           console.log('usersub', userSub);
+          // This data needs to be put into our redux container.
         })
         .catch(error => {
           if (error.code === 'UsernameExistsException') {
@@ -154,17 +177,11 @@ const Authentication = ({ navigation, route }: any) => {
               <Text style={style.backText}>Back</Text>
             </TouchableOpacity>
 
-            <Text
-              style={[
-                style.title,
-                { color: colorScheme === 'dark' ? white : woodsmoke },
-              ]}>
-              werdle
-            </Text>
+            <Text style={[style.title, textColor]}>werdle</Text>
           </View>
 
           <View style={style.inputContainer}>
-            <Text style={style.greeting}>
+            <Text style={[style.greeting, textColor]}>
               {authType === 'Log in' ? 'Welcome back' : "Let's get started"}
             </Text>
             <Input
@@ -185,9 +202,16 @@ const Authentication = ({ navigation, route }: any) => {
               value={password}
               autoCapitalize="none"
             />
+            {authType === 'Log in' ? (
+              <Text
+                style={[style.forgotPassword, textColor]}
+                onPress={() => navigation.navigate('ForgotPassword')}>
+                Forgot password?
+              </Text>
+            ) : null}
           </View>
 
-          <View style={style.buttonContainer}>
+          <View>
             <Button
               title={
                 authType === 'Log in'
@@ -212,8 +236,7 @@ const Authentication = ({ navigation, route }: any) => {
                   colorScheme === 'dark' ? hippieGreen : aquaForest,
               }}
               textColor={white}
-              onPress={handleAuth}
-              //   onPress={() => navigation.navigate('Main')}
+              onPress={() => handleAuth(authType)}
             />
           </View>
         </Pressable>
